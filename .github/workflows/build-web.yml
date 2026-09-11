@@ -1,1 +1,42 @@
-.github/workflows/build-web.yml
+name: Build web
+
+# GitHub 웹에서 data/patterns.json을 고치고 커밋하면,
+# 이 워크플로우가 index.html을 다시 만들어 커밋합니다.
+# 로컬에 파이썬을 깔거나 터미널을 열 필요가 없습니다.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "data/**"
+      - "template.html"
+      - "build.py"
+      - "version.properties"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 빌드
+        run: python3 build.py
+
+      - name: 결과 커밋
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet index.html; then
+            echo "변경 없음"
+            exit 0
+          fi
+          git add index.html
+          git commit -m "build: 데이터 변경 반영"
+          git push
