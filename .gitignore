@@ -1,0 +1,13 @@
+*.jks
+*.keystore
+release-keystore*
+local.properties
+
+build/
+.gradle/
+*.apk
+*.aab
+
+__pycache__/
+.DS_Store
+.vercel
