@@ -1,0 +1,663 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>멍개미국어 — 영어 아니고 미국어</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
+<style>
+  :root{
+    --bg:#121014; --ink:#F3EEE7; --muted:#918A94; --card:#1B1820;
+    --line:#2C2733; --red:#E03B2F; --gold:#E8B23A; --gold-dim:#3A2F18;
+    --pink:#FF4D9D; --ok:#3FBF8F;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Noto Sans KR","Pretendard","Apple SD Gothic Neo","Malgun Gothic",-apple-system,sans-serif;
+    font-size:15px;line-height:1.6;
+  }
+  .en{font-family:Georgia,"Iowan Old Style","Times New Roman",serif}
+  .wrap{max-width:560px;margin:0 auto;padding:0 18px 96px}
+  header{position:sticky;top:0;z-index:20;background:rgba(18,16,20,.93);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .hrow{max-width:560px;margin:0 auto;padding:14px 18px 0;display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+  .brand{font-weight:900;font-size:19px;letter-spacing:-.03em}
+  .brand small{display:block;font-weight:400;color:var(--gold);font-size:11.5px;letter-spacing:.02em;margin-top:1px}
+  nav{max-width:560px;margin:0 auto;padding:10px 18px 0;display:flex;gap:22px}
+  nav button{background:none;border:0;padding:0 0 9px;font:inherit;font-size:14px;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent}
+  nav button[aria-selected="true"]{color:var(--ink);font-weight:700;border-bottom-color:var(--red)}
+  nav button:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:3px}
+
+  section{display:none;padding-top:22px}
+  section.on{display:block}
+
+  .hero{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--red);padding:22px 20px 20px}
+  .hero .lab{font-size:12px;color:var(--muted);margin-bottom:14px}
+  .hero .pat{font-size:29px;line-height:1.25;letter-spacing:-.01em}
+  .hero .ko{margin-top:10px;color:var(--muted);font-size:14px}
+  .slot{color:var(--gold);border-bottom:2px solid var(--gold);padding-bottom:1px}
+
+  .bar{height:6px;background:#262030;border-radius:99px;overflow:hidden;margin-top:6px}
+  .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--red),var(--gold));transition:width .4s}
+
+  .stats{display:flex;gap:10px;margin-top:14px}
+  .stat{flex:1;background:var(--card);border:1px solid var(--line);padding:13px 14px}
+  .stat b{display:block;font-size:22px;font-weight:900;line-height:1.2}
+  .stat span{font-size:12px;color:var(--muted)}
+
+  .btn{display:block;width:100%;margin-top:14px;padding:16px;background:var(--red);color:#fff;border:0;font:inherit;font-weight:700;font-size:16px;cursor:pointer}
+  .btn:disabled{background:#2A242F;color:var(--muted);cursor:default}
+  .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);font-weight:500}
+  .btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+  h3{font-size:14px;font-weight:700;margin:26px 0 10px}
+  .note{color:var(--muted);font-size:13px}
+
+  .say{display:flex;gap:9px;margin-top:14px;padding:13px 14px;background:#16141B;border-left:2px solid var(--gold)}
+  .say b{flex:none;color:var(--gold);font-weight:700;font-size:12.5px;letter-spacing:-.01em}
+  .say span{font-size:13.5px;color:#C9C2CE;line-height:1.55}
+
+  .lv{background:var(--card);border:1px solid var(--line);padding:18px;margin-bottom:12px}
+  .lv.sel{border-color:var(--red);box-shadow:inset 3px 0 0 var(--red)}
+  .lv h4{margin:0;font-size:18px;font-weight:900;letter-spacing:-.02em}
+  .lv .cefr{font-size:12px;color:var(--muted);font-weight:400;margin-left:7px}
+  .lv ul{margin:12px 0 0;padding-left:17px;font-size:13.5px;color:var(--muted)}
+  .lv li{margin-bottom:4px}
+  .lv .foot{display:flex;justify-content:space-between;align-items:center;margin-top:14px;font-size:13px}
+  .pick{background:none;border:1px solid var(--line);color:var(--ink);padding:8px 14px;font:inherit;font-size:13px;cursor:pointer}
+  .pick.cur{background:var(--red);color:#fff;border-color:var(--red);font-weight:700}
+
+  #study{position:fixed;inset:0;background:var(--bg);z-index:50;display:none;flex-direction:column}
+  #study.on{display:flex}
+  .sbar{display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:1px solid var(--line)}
+  .sbar .x{background:none;border:0;font:inherit;font-size:20px;color:var(--muted);cursor:pointer;line-height:1;padding:0}
+  .sbar .prog{flex:1}
+  .sbody{flex:1;overflow-y:auto;padding:28px 18px;max-width:560px;margin:0 auto;width:100%}
+  .qko{font-size:23px;line-height:1.45;letter-spacing:-.01em;font-weight:500}
+  .hint{margin-top:18px;font-size:14px;color:var(--muted)}
+  .hint .en{color:var(--ink);font-size:17px}
+  .ans{margin-top:26px;padding-top:22px;border-top:1px solid var(--line)}
+  .ans .sent{font-size:24px;line-height:1.4;color:#fff}
+  .ans .pat{margin-top:16px;font-size:15px;color:var(--gold)}
+  .sfoot{padding:14px 18px calc(18px + env(safe-area-inset-bottom));max-width:560px;margin:0 auto;width:100%}
+  .grade{display:flex;gap:8px}
+  .grade button{flex:1;padding:14px 4px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-size:14px;font-weight:700;cursor:pointer}
+  .grade button small{display:block;font-weight:400;font-size:11px;color:var(--muted);margin-top:2px}
+  .grade button:nth-child(1){color:var(--red)}
+  .grade button:nth-child(3){color:var(--ok)}
+
+  .spk{display:flex;gap:8px;margin-top:16px}
+  .spk button{background:var(--gold-dim);border:1px solid #4A3C1E;color:var(--gold);font:inherit;font-size:13.5px;font-weight:700;padding:9px 15px;cursor:pointer}
+  .spk button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .more{margin-top:20px;background:none;border:0;border-bottom:1px solid var(--line);padding:0 0 3px;font:inherit;font-size:13.5px;color:var(--muted);cursor:pointer}
+  .exrow{display:flex;align-items:flex-start;gap:10px;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--line)}
+  .exrow:last-child{border-bottom:0}
+  .exrow .en{font-size:17px;line-height:1.4}
+  .exrow .note{margin-top:2px;font-size:13px}
+  .mini{flex:none;background:none;border:1px solid var(--line);color:var(--ink);padding:6px 9px;font-size:13px;cursor:pointer}
+
+  .cal{display:flex;gap:4px;align-items:flex-end;height:64px;margin-top:4px}
+  .cal div{flex:1;background:#241E2C;position:relative}
+  .cal div i{position:absolute;bottom:0;left:0;right:0;background:var(--red)}
+  .list{background:var(--card);border:1px solid var(--line)}
+  .row{display:flex;justify-content:space-between;gap:12px;padding:12px 14px;border-bottom:1px solid var(--line);font-size:14px}
+  .row:last-child{border-bottom:0}
+  .row .en{flex:1}
+  .row span{color:var(--muted);font-size:12px;white-space:nowrap}
+
+  .set label{display:flex;justify-content:space-between;align-items:center;background:var(--card);border:1px solid var(--line);padding:14px;margin-bottom:10px}
+  .set select{font:inherit;padding:7px 9px;border:1px solid var(--line);background:#221D29;color:var(--ink)}
+  .danger{color:var(--red);background:none;border:1px solid var(--line);padding:12px;width:100%;font:inherit;cursor:pointer;margin-top:6px}
+  .src{font-size:12.5px;color:var(--muted);margin-top:18px}
+  .empty{background:var(--card);border:1px dashed var(--line);padding:22px;text-align:center;color:var(--muted);font-size:14px}
+  .credit{margin-top:26px;padding-top:16px;border-top:1px solid var(--line);font-size:12px;color:#6B6472}
+  .credit b{color:var(--gold);font-weight:700}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+  .tab5 nav{gap:16px}
+  .badge{display:inline-block;padding:2px 7px;font-size:11px;font-weight:700;border:1px solid;border-radius:2px;white-space:nowrap}
+  .b0{color:var(--muted);border-color:var(--line)}
+  .b1{color:#8FA7C9;border-color:#2F3B4E}
+  .b2{color:var(--gold);border-color:#4A3C1E}
+  .b3{color:#fff;background:var(--red);border-color:var(--red)}
+  .ms{margin-top:10px;font-size:12.5px;color:var(--muted)}
+  .ms b{color:var(--gold);font-weight:700}
+  .exam{background:var(--card);border:1px solid var(--line);padding:16px;margin-bottom:10px}
+  .exam .q{font-size:17px;line-height:1.45}
+  .exam .req{margin-top:10px;font-size:12.5px;color:var(--muted);display:flex;gap:12px;flex-wrap:wrap}
+  .exam .req i{font-style:normal}
+  .exam .req .no{color:#6B6472}
+  .exam .req .yes{color:var(--ok)}
+  input[type=text]{width:100%;margin-top:14px;padding:14px;background:#0D0B10;border:1px solid var(--line);color:var(--ink);font:inherit;font-size:17px;font-family:Georgia,serif}
+  input[type=text]:focus{outline:0;border-color:var(--gold)}
+  .erow{display:flex;gap:8px;margin-top:10px}
+  .erow button{flex:1;padding:13px;border:0;font:inherit;font-weight:700;font-size:15px;cursor:pointer;background:var(--red);color:#fff}
+  .erow .mic{flex:none;background:var(--gold-dim);color:var(--gold);border:1px solid #4A3C1E;padding:13px 16px}
+  .erow .mic.rec{background:var(--red);color:#fff;border-color:var(--red)}
+  .verdict{margin-top:14px;padding:14px;border-left:2px solid}
+  .verdict.pass{border-color:var(--ok);background:#12211C}
+  .verdict.fail{border-color:var(--red);background:#221214}
+  .verdict b{display:block;margin-bottom:5px;font-weight:900}
+  .diff{font-size:16px;margin-top:8px}
+  .diff s{color:var(--red);text-decoration:none;background:#2A1418}
+  .diff u{color:var(--ok);text-decoration:none}
+
+  #intro{position:fixed;inset:0;background:var(--bg);z-index:60;display:none;overflow-y:auto}
+  #intro.on{display:block}
+  .ibody{max-width:560px;margin:0 auto;padding:52px 24px calc(40px + env(safe-area-inset-bottom))}
+  .ieyebrow{color:var(--gold);font-size:13px;font-weight:700;letter-spacing:.02em}
+  .ibody h1{margin:10px 0 24px;font-size:33px;font-weight:900;line-height:1.22;letter-spacing:-.03em}
+  .ibody p{color:#B8B1BF;font-size:15.5px;line-height:1.72;margin:0 0 16px}
+  .ibody p.big{color:var(--ink);font-size:23px;font-weight:900;line-height:1.4;letter-spacing:-.02em;margin:26px 0;padding-left:14px;border-left:3px solid var(--red)}
+  .ibody b{color:var(--gold)}
+  .strip{margin-bottom:14px;padding:11px 14px;background:#16141B;border-left:2px solid var(--red);font-size:13px;color:#B8B1BF}
+  .info{background:var(--card);border:1px solid var(--line)}
+  .info div{display:flex;justify-content:space-between;gap:12px;padding:12px 14px;border-bottom:1px solid var(--line);font-size:13.5px}
+  .info div:last-child{border-bottom:0}
+  .info span{color:var(--muted)}
+  .info a{color:var(--gold);text-decoration:none}
+
+  .goal{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--gold);padding:18px;margin-bottom:12px}
+  .goal h4{margin:0 0 6px;font-size:19px;font-weight:900;letter-spacing:-.02em}
+  .grid{margin-top:14px}
+  .gr{display:flex;align-items:baseline;gap:9px;padding:7px 0;border-bottom:1px solid #221D29;font-size:13.5px;color:var(--muted)}
+  .gr:last-child{border-bottom:0}
+  .gr i{font-style:normal;color:#4A4352}
+  .gr span{flex:1}
+  .gr b{font-weight:700;color:#8E8797}
+  .gr.yes{color:var(--ink)} .gr.yes i{color:var(--ok)} .gr.yes b{color:var(--ok)}
+  .trk{background:var(--card);border:1px solid var(--line);padding:14px 16px;margin-bottom:8px}
+  .trk.now{border-color:var(--red)}
+  .trk b{font-size:15px;font-weight:900;margin-right:8px}
+  .trk p{margin:6px 0 0}
+
+  .ibody p.fine{font-size:13px;color:#7A7384;border-top:1px solid var(--line);padding-top:14px;margin-top:22px}
+</style>
+
+<body class="tab5">
+<header>
+  <div class="hrow"><div class="brand">멍개미국어<small>영어 아니고 미국어 · 孟狗美语</small></div><div class="note" id="streak"></div></div>
+  <nav role="tablist">
+    <button role="tab" aria-selected="true" data-t="today">오늘</button>
+    <button role="tab" aria-selected="false" data-t="level">레벨</button>
+    <button role="tab" aria-selected="false" data-t="exam">검정</button>
+    <button role="tab" aria-selected="false" data-t="log">기록</button>
+    <button role="tab" aria-selected="false" data-t="set">설정</button>
+  </nav>
+</header>
+
+<div class="wrap">
+  <section id="today" class="on"></section>
+  <section id="level"></section>
+  <section id="exam"></section>
+  <section id="log"></section>
+  <section id="set" class="set"></section>
+</div>
+
+<div id="intro">
+  <div class="ibody">
+    <div class="ieyebrow">멍개미국어</div>
+    <h1>기본은 이미 배우셨습니다</h1>
+    <p>우리는 학교에서 십몇 년간 문법을 배웠습니다. 몰라서 말을 못 하는 게 아닙니다. 입에서 안 나오는 겁니다.</p>
+    <p>미국 사람이 실제로 쓰는 건 문법이 아니라 <b>패턴</b>입니다. 틀 하나를 통째로 외워두고 단어만 갈아 끼웁니다. 그래서 빠르고, 그래서 안 막힙니다.</p>
+    <p class="big">패턴 + 어휘.<br>이 둘이면 미국인과 대화가 됩니다.</p>
+    <p>미국어를 정복하시고, 세계 어디든 맘껏 다니십시오.</p>
+    <p class="fine">엄밀히는 미국 영어입니다. 그런데 학교에서 배운 영어와 너무 달라서, 저희는 그냥 미국어라고 부릅니다.</p>
+    <div class="say"><b>멍개</b><span>저는 힙합 하러 미국 갑니다. 매니저님은 통역 없이 따라오시면 됩니다.</span></div>
+    <button class="btn" id="igo">시작하겠습니다</button>
+  </div>
+</div>
+
+<div id="study">
+  <div class="sbar">
+    <button class="x" id="sclose" aria-label="학습 닫기">✕</button>
+    <div class="prog"><div class="bar"><i id="sprog" style="width:0"></i></div></div>
+    <div class="note" id="scount"></div>
+  </div>
+  <div class="sbody" id="sbody"></div>
+  <div class="sfoot" id="sfoot"></div>
+</div>
+
+<script>
+/* ---------- 데이터 (build.py가 data/patterns.json에서 주입) ---------- */
+const P = [/*__PATTERNS__*/];
+const LV = [/*__LEVELS__*/];
+const VER = {/*__VER__*/};
+const GOALS = __GOALS__;
+const TRACKS = __TRACKS__;
+const PLAN = __PLAN__;
+
+/* ---------- 상태 ---------- */
+const KEY='mungae_american_v1';
+const IV=[0,1,3,7,16,35];
+const FAST=5000;            // 즉답 기준 5초
+const KEEP=35;              // 졸업 후 유지 검정까지 일수
+let S={cards:{},log:{},daily:5,level:1,streak:0,last:null,auto:true,rate:.95,intro:0,msSum:0,msN:0};
+let Q=[],qi=0,t0=0,curK=0;
+
+const today=()=>{const d=new Date();return new Date(d.getTime()-d.getTimezoneOffset()*6e4).toISOString().slice(0,10)};
+const addDays=n=>{const d=new Date();d.setDate(d.getDate()+n);return new Date(d.getTime()-d.getTimezoneOffset()*6e4).toISOString().slice(0,10)};
+const pat=i=>({i,lv:P[i][0],pattern:P[i][1],ko:P[i][2],tip:P[i][3],ex:P[i][4]});
+const card=i=>Object.assign({box:0,due:null,seen:0,day:null,used:[],fast:0,grad:null,gdue:null},S.cards[i]);
+const trainN=i=>P[i][4].length-1;                 // 마지막 예문은 검정 전용으로 봉인
+const sealed=i=>P[i][4][P[i][4].length-1];
+
+/* 습득 단계: 0 처음 · 1 익히는 중 · 2 안정 · 3 내 것 */
+function stage(i){const c=card(i);
+  if(c.grad) return 3; if(c.seen===0) return 0; return c.box>=3?2:1;}
+const BADGE=[['처음','b0'],['익히는 중','b1'],['안정','b2'],['내 것','b3']];
+/* 졸업 검정 응시 조건 */
+function ready(i){const c=card(i);
+  return {ex:c.used.length>=3, fast:c.fast>=2, box:c.box>=3,
+          ok:c.used.length>=3&&c.fast>=2&&c.box>=3};}
+const eligible=()=>P.map((_,i)=>i).filter(i=>!card(i).grad&&ready(i).ok);
+const retention=()=>P.map((_,i)=>i).filter(i=>{const c=card(i);return c.grad&&c.gdue&&c.gdue<=today()});
+
+async function load(){
+  try{const r=await window.storage.get(KEY); if(r&&r.value) S=Object.assign(S,JSON.parse(r.value));}catch(e){}
+  render();
+  if(!S.intro) showIntro();
+}
+async function save(){ try{await window.storage.set(KEY,JSON.stringify(S));}catch(e){} }
+
+/* ---------- 음성 출력 ---------- */
+const TTS = typeof window!=='undefined' && 'speechSynthesis' in window;
+let VOICE=null;
+function pickVoice(){ if(!TTS) return; const v=speechSynthesis.getVoices();
+  VOICE = v.find(x=>/en[-_]US/i.test(x.lang)&&/Google|Natural|Samantha|Aria/i.test(x.name))
+       || v.find(x=>/en[-_]US/i.test(x.lang)) || v.find(x=>/^en/i.test(x.lang)) || null; }
+if(TTS){ pickVoice(); speechSynthesis.onvoiceschanged=pickVoice; }
+function speak(text,rate){ if(!TTS) return; speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text); u.lang='en-US';
+  if(VOICE) u.voice=VOICE; u.rate=rate||S.rate||.95; speechSynthesis.speak(u); }
+
+/* ---------- 음성 입력 ---------- */
+const SR = typeof window!=='undefined' && (window.SpeechRecognition||window.webkitSpeechRecognition);
+let rec=null;
+function listen(onText,btn){
+  if(!SR) return;
+  if(rec){ rec.stop(); rec=null; btn.classList.remove('rec'); return; }
+  rec=new SR(); rec.lang='en-US'; rec.interimResults=false; rec.maxAlternatives=1;
+  btn.classList.add('rec');
+  rec.onresult=e=>onText(e.results[0][0].transcript);
+  rec.onend=()=>{ btn.classList.remove('rec'); rec=null; };
+  rec.onerror=()=>{ btn.classList.remove('rec'); rec=null; };
+  rec.start();
+}
+
+/* ---------- 채점기 ---------- */
+function base(x){ return x.toLowerCase()
+  .replace(/[\u2018\u2019]/g,"'").replace(/[\u201c\u201d]/g,'"'); }
+/* 축약형을 푼 형태와, 아포스트로피만 지운 형태 — 둘 다로 채점해 관대한 쪽을 취합니다 */
+function normA(x){ return base(x)
+  .replace(/n't\b/g,' not').replace(/'m\b/g,' am').replace(/'re\b/g,' are')
+  .replace(/'ll\b/g,' will').replace(/'ve\b/g,' have').replace(/'d\b/g,' would')
+  .replace(/'s\b/g,' is').replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim(); }
+function normB(x){ return base(x).replace(/'/g,'').replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim(); }
+const norm=normA;
+function lev(a,b){ if(a===b) return 1;
+  const m=a.length,n=b.length; if(!m||!n) return 0;
+  let prev=Array.from({length:n+1},(_,j)=>j), cur=new Array(n+1);
+  for(let i=1;i<=m;i++){ cur[0]=i;
+    for(let j=1;j<=n;j++) cur[j]=Math.min(prev[j]+1,cur[j-1]+1,prev[j-1]+(a[i-1]===b[j-1]?0:1));
+    [prev,cur]=[cur,prev]; }
+  return 1-prev[n]/Math.max(m,n); }
+function sim(a,b){ return Math.max(lev(normA(a),normA(b)), lev(normB(a),normB(b))); }
+const toks=x=>norm(x).split(' ').filter(Boolean);
+/* 토큰 단위 대조 — 빠진 말과 틀린 말을 눈으로 보여줍니다 */
+function compare(user,ans){
+  const A=toks(user), B=toks(ans), m=A.length, n=B.length;
+  const L=Array.from({length:m+1},()=>new Array(n+1).fill(0));
+  for(let i=m-1;i>=0;i--) for(let j=n-1;j>=0;j--)
+    L[i][j] = A[i]===B[j] ? L[i+1][j+1]+1 : Math.max(L[i+1][j],L[i][j+1]);
+  const ua=[],ba=[]; let i=0,j=0;
+  while(i<m&&j<n){
+    if(A[i]===B[j]){ ua.push(A[i]); ba.push(B[j]); i++; j++; }
+    else if(L[i+1][j]>=L[i][j+1]){ ua.push('<s>'+A[i]+'</s>'); i++; }
+    else { ba.push('<u>'+B[j]+'</u>'); j++; } }
+  while(i<m) ua.push('<s>'+A[i++]+'</s>');
+  while(j<n) ba.push('<u>'+B[j++]+'</u>');
+  return {user:ua.join(' '), ans:ba.join(' ')};
+}
+
+/* ---------- 오늘의 큐 ---------- */
+function buildQueue(){
+  const t=today(),due=[],fresh=[];
+  P.forEach((_,i)=>{ const c=card(i);
+    if(c.seen>0){ if(!c.grad && c.due && c.due<=t) due.push(i); }
+    else if(P[i][0]<=S.level) fresh.push(i); });
+  return due.concat(fresh.slice(0,Math.max(0,S.daily-due.length)));
+}
+function stats(){
+  let learned=0,mine=0,lvTotal=0,lvMine=0;
+  P.forEach((p,i)=>{ const c=card(i);
+    if(c.seen>0)learned++; if(c.grad)mine++;
+    if(p[0]===S.level){lvTotal++; if(c.grad)lvMine++;} });
+  return {learned,mine,lvTotal,lvMine};
+}
+
+/* ---------- 화면 ---------- */
+function render(){ renderToday(); renderLevel(); renderExam(); renderLog(); renderSet();
+  document.getElementById('streak').textContent = S.streak>0? S.streak+'일 연속' : ''; }
+
+function renderToday(){
+  const q=buildQueue(), st=stats(), t=today(), el=eligible().length, rt=retention().length;
+  const hero=P.findIndex((_,i)=>card(i).seen===0&&P[i][0]<=S.level);
+  const hp=pat(hero>=0?hero:0), L=LV[S.level-1];
+  document.getElementById('today').innerHTML=`
+    <div class="strip">기본 문법은 학교에서 끝냈습니다. 실전에서 갈리는 건 패턴입니다.</div>
+    <div class="hero">
+      <div class="lab">${hero>=0?'오늘 새로 만날 패턴':'익힌 패턴 다시 보기'}</div>
+      <div class="pat en">${hp.pattern.replace(/___/g,'<span class="slot">&nbsp;&nbsp;&nbsp;&nbsp;</span>')}</div>
+      <div class="ko">${hp.ko}</div>
+    </div>
+    <button class="btn" id="start" ${q.length?'':'disabled'}>${q.length?`훈련 시작 · 카드 ${q.length}장`:'오늘 몫은 끝났습니다'}</button>
+    ${q.length?'':'<p class="note" style="text-align:center;margin-top:10px">더 하셔도 실력은 내일 올라갑니다.</p>'}
+    ${el||rt?`<button class="btn ghost" id="togo">${rt?`유지 검정 ${rt}개`:''}${el&&rt?' · ':''}${el?`졸업 검정 ${el}개 응시 가능`:''}</button>`:''}
+    <div class="stats">
+      <div class="stat"><b>${S.log[t]||0}</b><span>오늘 푼 카드</span></div>
+      <div class="stat"><b>${st.mine}</b><span>내 것이 된 패턴</span></div>
+      <div class="stat"><b>${st.learned}/60</b><span>만난 패턴</span></div>
+    </div>
+    <h3>${L.stage} · ${L.name}</h3>
+    <div class="bar"><i style="width:${st.lvTotal?Math.round(st.lvMine/st.lvTotal*100):0}%"></i></div>
+    <p class="note" style="margin-top:8px">${st.lvMine} / ${st.lvTotal}개가 내 것 · 목표 ${L.goal}</p>
+    <div class="say"><b>멍개</b><span>${L.bark}</span></div>`;
+  const b=document.getElementById('start'); if(b&&q.length) b.onclick=()=>startStudy(q);
+  const g=document.getElementById('togo'); if(g) g.onclick=()=>go('exam');
+}
+
+function avgSec(){ return S.msN? (S.msSum/S.msN/1000) : 0; }
+function progress(k){
+  const mine=stats().mine;
+  if(k==='pattern') return mine;
+  if(k==='speed')   return avgSec();
+  return 0;                                  // 어휘·축약·리스닝 트랙은 아직 시작 전
+}
+function renderLevel(){
+  const mine=stats().mine, sec=avgSec();
+  const goals=GOALS.map(g=>{
+    const rows=g.need.map(n=>{
+      let cur=progress(n.k), done=false, txt='';
+      if(n.k==='pattern'){ done=cur>=n.target; txt=`${cur} / ${n.target}`; }
+      else if(n.k==='speed'){ done=S.msN>=20&&cur<=n.target; txt=S.msN? `${cur.toFixed(1)}초` : '기록 없음'; }
+      else { txt='트랙 준비 중'; }
+      return `<div class="gr ${done?'yes':''}"><i>${done?'●':'○'}</i><span>${n.label}</span><b>${txt}</b></div>`;
+    }).join('');
+    const pw=Math.min(100,Math.round(mine/g.need[0].target*100));
+    return `<div class="goal">
+      <h4>${g.title}</h4>
+      <p class="note">${g.desc}</p>
+      <div class="bar"><i style="width:${pw}%"></i></div>
+      <div class="grid">${rows}</div></div>`;
+  }).join('');
+
+  const levels=LV.map(l=>{
+    const plan=(PLAN.per&&PLAN.per[l.n])||0;
+    let load=0,m=0; P.forEach((p,i)=>{ if(p[0]===l.n){load++; if(card(i).grad)m++;} });
+    const pct=plan?Math.round(m/plan*100):0;
+    return `<div class="lv ${S.level===l.n?'sel':''}">
+      <h4>${l.stage}<span class="cefr">${l.name} · ${l.cefr}</span></h4>
+      <ul>${l.can.map(c=>`<li>${c}</li>`).join('')}</ul>
+      <div class="say"><b>멍개</b><span>${l.bark}</span></div>
+      <div class="bar"><i style="width:${pct}%"></i></div>
+      <div class="foot"><span class="note">내 것 ${m} / 계획 ${plan}개 · 현재 수록 ${load}개</span>
+      <button class="pick ${S.level===l.n?'cur':''}" data-lv="${l.n}">${S.level===l.n?'진행 중':'여기부터'}</button></div>
+    </div>`;
+  }).join('');
+
+  const tracks=TRACKS.map(t=>`<div class="trk ${t.state==='진행'?'now':''}">
+      <b>${t.n}. ${t.name}</b><span class="badge ${t.state==='진행'?'b3':'b0'}">${t.state}</span>
+      <p class="note">${t.note}</p></div>`).join('');
+
+  document.getElementById('level').innerHTML=`
+    <p class="note" style="margin-top:0">도착지는 두 곳입니다. 여기에 닿기 위해 필요한 것을 전부 적어 두었습니다.</p>
+    ${goals}
+    <h3>트랙 — 패턴과 어휘</h3>
+    <p class="note">패턴은 입, 어휘는 귀입니다. 둘 중 하나만으로는 어느 쪽 목표에도 닿지 못합니다.</p>
+    ${tracks}
+    <h3>패턴 300 · 단계별 진행</h3>
+    ${levels}
+    <p class="note">진도는 '만난 패턴'이 아니라 '검정을 통과한 패턴'으로만 셉니다.
+    콘텐츠는 단계적으로 채워집니다. 현재 ${PLAN.loaded} / ${PLAN.total}개가 수록되어 있고, 나머지는 업데이트로 들어옵니다.
+    한 단계의 80%가 내 것이 되면 다음 단계로 넘어가시길 권합니다.</p>`;
+  document.querySelectorAll('.pick').forEach(b=>b.onclick=()=>{S.level=+b.dataset.lv;save();render();});
+}
+
+function renderExam(){
+  const el=eligible(), rt=retention(), box=document.getElementById('exam');
+  const req=i=>{const r=ready(i),c=card(i);
+    return `<div class="req">
+      <i class="${r.ex?'yes':'no'}">서로 다른 예문 ${c.used.length}/3</i>
+      <i class="${r.fast?'yes':'no'}">연속 즉답 ${c.fast}/2</i>
+      <i class="${r.box?'yes':'no'}">${r.box?'7일 이상 유지':'복습 간격 미달'}</i></div>`};
+  const waiting=P.map((_,i)=>i).filter(i=>!card(i).grad&&card(i).seen>0&&!ready(i).ok);
+  box.innerHTML=`
+    <p class="note" style="margin-top:0">검정은 <b style="color:var(--gold)">훈련에 한 번도 쓰지 않은 예문</b>으로 봅니다.
+    문장을 외웠는지가 아니라 패턴을 쓸 수 있는지를 가리기 위해서입니다. 타이핑하거나 마이크로 말하면 자동 채점됩니다.</p>
+    ${rt.length?`<h3>유지 검정 ${rt.length}개</h3>
+      <p class="note">내 것이 된 지 ${KEEP}일이 지났습니다. 아직도 내 것인지 확인합니다. 틀리면 배지가 회수됩니다.</p>
+      ${rt.map(i=>examCard(i,true)).join('')}`:''}
+    ${el.length?`<h3>졸업 검정 ${el.length}개</h3>${el.map(i=>examCard(i,false)).join('')}`:''}
+    ${!el.length&&!rt.length?'<div class="empty">아직 응시 가능한 패턴이 없습니다.<br>훈련 탭에서 조건을 채우십시오.</div>':''}
+    ${waiting.length?`<h3>조건을 채우는 중 ${waiting.length}개</h3>
+      ${waiting.slice(0,12).map(i=>`<div class="exam"><div class="q en">${pat(i).pattern}</div>${req(i)}</div>`).join('')}`:''}
+    <div class="say" style="margin-top:22px"><b>멍개</b><span>자가채점은 기분입니다. 검정은 기록입니다. 저는 기록만 봅니다.</span></div>`;
+  el.concat(rt).forEach(i=>bindExam(i));
+}
+function examCard(i,keep){
+  const p=pat(i), s=sealed(i);
+  return `<div class="exam" id="ex${i}">
+    <div class="q">${s[1]}</div>
+    <div class="note" style="margin-top:6px">${p.pattern} — ${p.ko}</div>
+    <input type="text" id="in${i}" placeholder="미국어로 입력하십시오"
+      autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
+    <div class="erow">
+      <button data-go="${i}">${keep?'유지 검정 제출':'제출'}</button>
+      ${SR?`<button class="mic" data-mic="${i}" aria-label="말해서 답하기">🎤</button>`:''}
+    </div>
+    <div id="v${i}"></div></div>`;
+}
+function bindExam(i){
+  const inp=document.getElementById('in'+i); if(!inp) return;
+  const submit=()=>judge(i,inp.value);
+  document.querySelector(`[data-go="${i}"]`).onclick=submit;
+  inp.onkeydown=e=>{ if(e.key==='Enter') submit(); };
+  const mic=document.querySelector(`[data-mic="${i}"]`);
+  if(mic) mic.onclick=()=>listen(t=>{inp.value=t; judge(i,t);},mic);
+}
+function judge(i,ans){
+  if(!ans.trim()) return;
+  const p=pat(i), s=sealed(i), score=sim(ans,s[0]), pass=score>=0.9, d=compare(ans,s[0]);
+  const c=card(i), keep=!!c.grad;
+  if(pass){ c.grad=today(); c.gdue=addDays(KEEP); c.box=5; c.due=addDays(KEEP); }
+  else if(keep){ c.grad=null; c.gdue=null; c.box=2; c.fast=0; c.due=addDays(1); }
+  else { c.fast=0; c.box=Math.max(1,c.box-1); c.due=addDays(1); }
+  S.cards[i]=c; save();
+  document.getElementById('v'+i).innerHTML=`
+    <div class="verdict ${pass?'pass':'fail'}">
+      <b>${pass?(keep?'유지했습니다. 여전히 내 것입니다.':'통과. 이 패턴은 이제 내 것입니다.'):(keep?'배지를 회수했습니다. 다시 쌓으십시오.':'불합격. 조건을 다시 채우셔야 합니다.')}</b>
+      <div class="diff en">내 답 — ${d.user||'(없음)'}</div>
+      <div class="diff en">정답 — ${d.ans}</div>
+      <div class="note" style="margin-top:8px">일치율 ${Math.round(score*100)}%</div>
+      ${TTS?'<div class="spk"><button id="vs'+i+'">🔊 정답 듣기</button></div>':''}
+    </div>`;
+  const b=document.getElementById('vs'+i); if(b) b.onclick=()=>speak(s[0]);
+  renderToday(); renderLevel(); renderLog();
+}
+
+function renderLog(){
+  const days=[...Array(14)].map((_,k)=>addDays(k-13));
+  const max=Math.max(5,...days.map(d=>S.log[d]||0));
+  const seen=P.map((_,i)=>i).filter(i=>card(i).seen>0).sort((a,b)=>stage(b)-stage(a)||card(b).box-card(a).box);
+  document.getElementById('log').innerHTML=`
+    <h3 style="margin-top:0">최근 2주</h3>
+    <div class="cal">${days.map(d=>`<div title="${d}"><i style="height:${Math.round((S.log[d]||0)/max*100)}%"></i></div>`).join('')}</div>
+    <p class="note" style="margin-top:8px">총 학습일 ${Object.keys(S.log).length}일 · 연속 ${S.streak}일</p>
+    <h3>패턴별 상태</h3>
+    ${seen.length?`<div class="list">${seen.map(i=>{const c=card(i),g=stage(i);
+      return `<div class="row"><span class="en">${pat(i).pattern}</span>
+        <span><span class="badge ${BADGE[g][1]}">${BADGE[g][0]}</span></span></div>`}).join('')}</div>`
+      :'<div class="empty">아직 기록이 없습니다. 오늘 탭에서 첫 카드를 여십시오.</div>'}`;
+}
+
+function renderSet(){
+  document.getElementById('set').innerHTML=`
+    <label>하루 새 패턴 수
+      <select id="dly">${[3,5,8,10].map(n=>`<option ${S.daily===n?'selected':''}>${n}</option>`).join('')}</select></label>
+    <p class="note">복습 카드는 이 수치와 별개로, 예정된 날짜에 자동으로 추가됩니다.</p>
+    <h3>소리</h3>
+    ${TTS?`<label>정답을 공개하면 자동으로 읽어주기
+      <select id="auto"><option value="1" ${S.auto?'selected':''}>켜기</option><option value="0" ${S.auto?'':'selected'}>끄기</option></select></label>
+    <label>읽기 속도
+      <select id="rate">${[[0.8,'느리게'],[0.95,'보통'],[1.1,'빠르게']].map(([v,n])=>`<option value="${v}" ${S.rate==v?'selected':''}>${n}</option>`).join('')}</select></label>
+    <button class="btn ghost" id="test" style="margin-top:0">소리 테스트</button>`
+    :'<p class="note">이 브라우저는 음성 읽기를 지원하지 않습니다. Chrome 또는 Safari에서 열어주십시오.</p>'}
+    <p class="note">${SR?'마이크 입력이 가능합니다. 검정에서 🎤 버튼을 누르고 말씀하시면 됩니다.':'이 브라우저는 마이크 입력을 지원하지 않습니다. 검정은 타이핑으로 보시면 됩니다.'}</p>
+    <h3>무엇을 '내 것'으로 보는가</h3>
+    <p class="note">네 단계로 나눕니다. <b>처음</b> → <b>익히는 중</b> → <b>안정</b> → <b>내 것</b>.
+    앞의 세 단계는 훈련으로 올라가지만, 마지막 한 칸은 검정을 통과해야만 넘어갑니다.
+    응시 조건은 세 가지입니다. 서로 다른 예문 3개에서 성공, ${FAST/1000}초 이내 즉답 2회 연속, 복습 간격 7일 이상 생존.
+    검정은 훈련에 쓰지 않은 봉인 예문으로 봅니다. 통과해도 ${KEEP}일 뒤 유지 검정이 한 번 더 돌아옵니다.</p>
+    <h3>훈련 방식</h3>
+    <p class="note">한국어 문장을 보고 미국어로 소리 내어 말한 뒤 정답을 확인하십시오. 눈으로만 보면 남지 않습니다.
+    정답을 여는 데 걸린 시간이 기록되므로, 채점을 후하게 주셔도 즉답 조건에서 걸립니다.
+    틀린 카드는 당일 다시, 맞힌 카드는 1 → 3 → 7 → 16 → 35일 간격으로 돌아옵니다.</p>
+    <h3>왜 패턴인가</h3>
+    <p class="note">기본 문법은 이미 학교에서 다 배우셨습니다. 몰라서 못 하는 게 아니라 입에서 안 나오는 겁니다.
+    실전 미국어의 핵심은 문법이 아니라 <b style="color:var(--gold)">패턴</b>입니다. 틀을 통째로 외워두고 단어만 갈아 끼우면 됩니다.
+    <b style="color:var(--gold)">패턴 + 어휘</b>, 이 둘이 미국인과 자유롭게 대화하는 힘입니다. 미국어를 정복하시고 세계 어디든 맘껏 다니십시오.</p>
+    <p class="note">패턴 60개 다음은 어휘입니다. 같은 검정 방식으로 확장할 예정입니다.</p>
+    <button class="btn ghost" id="reintro" style="margin-top:0">소개 다시 보기</button>
+    <h3>자료 출처</h3>
+    <p class="src">패턴 60개는 CEFR 등급 체계(A2·B1·B2)를 기준으로 선정했고, 예문은 미국 현지에서 실제로 통용되는 표현만 직접 작성했습니다.
+    무료로 확장 가능한 공개 자료: CEFR-J Grammar Profile / CEFR-J Wordlist(도쿄외대 Tono 연구실, 출처 표기 시 상업적 이용 가능),
+    Tatoeba 한·영 예문 코퍼스(CC BY 2.0 FR).</p>
+    <h3>앱 정보</h3>
+    <div class="info">
+      <div><b>앱 버전</b><span>${VER.app}</span></div>
+      <div><b>콘텐츠 버전</b><span>패턴 데이터 ${VER.data}</span></div>
+      <div><b>빌드</b><span>${VER.build}</span></div>
+      <div><b>수록</b><span>패턴 60 · 예문 ${P.reduce((a,p)=>a+p[4].length,0)}</span></div>
+      <div><b>제작</b><span>JNP Solution</span></div>
+      <div><b>기획·개발</b><span>정영재 (Marvin Jung)</span></div>
+      <div><b>캐릭터</b><span>멍개 MUNGAE · 孟狗</span></div>
+      <div><b>웹</b><span><a href="https://mungae.co" target="_blank" rel="noopener">mungae.co</a></span></div>
+    </div>
+    <div class="credit">멍개미국어 · <b>孟狗美语</b><br>ⓒ JNP Solution. 멍개/MUNGAE는 등록 출원된 상표입니다.</div>
+    <h3>기록</h3>
+    <button class="danger" id="reset">학습 기록 초기화</button>
+    <p class="note" style="margin-top:8px">진도, 배지, 연속 기록이 모두 사라집니다. 되돌릴 수 없습니다.</p>`;
+  document.getElementById('dly').onchange=e=>{S.daily=+e.target.value;save();renderToday();};
+  if(TTS){
+    document.getElementById('auto').onchange=e=>{S.auto=e.target.value==='1';save();};
+    document.getElementById('rate').onchange=e=>{S.rate=+e.target.value;save();speak("Let me check and get back to you.");};
+    document.getElementById('test').onclick=()=>speak("Just to clarify, are we talking about Q3 or Q4?");
+  }
+  document.getElementById('reintro').onclick=()=>showIntro();
+  document.getElementById('reset').onclick=()=>{ if(confirm('모든 진도와 배지가 사라집니다. 계속할까요?')){
+    S={cards:{},log:{},daily:S.daily,level:1,streak:0,last:null,auto:S.auto,rate:S.rate,intro:1,msSum:0,msN:0}; save(); render(); }};
+}
+
+/* ---------- 훈련 세션 ---------- */
+function startStudy(items){ Q=items; qi=0; document.getElementById('study').classList.add('on'); drawCard(); }
+function endStudy(){ document.getElementById('study').classList.remove('on'); render(); }
+
+function drawCard(){
+  if(qi>=Q.length){ finish(); return; }
+  const i=Q[qi], p=pat(i), c=card(i);
+  curK = c.seen % trainN(i);
+  const ex=p.ex[curK];
+  t0=Date.now();
+  document.getElementById('sprog').style.width=Math.round(qi/Q.length*100)+'%';
+  document.getElementById('scount').textContent=`${qi+1} / ${Q.length}`;
+  document.getElementById('sbody').innerHTML=`
+    <div class="qko">${ex[1]}</div>
+    <div class="hint" id="hintbox">${c.seen===0
+      ?`<div class="en">${p.pattern.replace(/___/g,'<span class="slot">&nbsp;&nbsp;&nbsp;</span>')}</div><div style="margin-top:4px">${p.ko}</div>`
+      :'<button class="btn ghost" id="hintbtn" style="margin:0;padding:10px">패턴 힌트 보기</button>'}</div>`;
+  document.getElementById('sfoot').innerHTML=`<button class="btn" id="flip">미국어로 말한 뒤 정답 확인</button>`;
+  const hb=document.getElementById('hintbtn');
+  if(hb) hb.onclick=()=>{ document.getElementById('hintbox').innerHTML=
+    `<div class="en">${p.pattern.replace(/___/g,'<span class="slot">&nbsp;&nbsp;&nbsp;</span>')}</div><div style="margin-top:4px">${p.ko}</div>`;
+    t0 += 0; };
+  document.getElementById('flip').onclick=()=>reveal(i,curK);
+}
+
+function reveal(i,k){
+  const ms=Date.now()-t0, p=pat(i), ex=p.ex[k];
+  const others=p.ex.filter((_,x)=>x!==k);
+  document.getElementById('sbody').insertAdjacentHTML('beforeend',`
+    <div class="ans">
+      <div class="sent en">${ex[0]}</div>
+      <div class="pat en">${p.pattern}</div>
+      <div class="ms">떠올리는 데 <b>${(ms/1000).toFixed(1)}초</b> ${ms<=FAST?'— 즉답으로 기록됩니다':`— ${FAST/1000}초 안에 나와야 즉답입니다`}</div>
+      <div class="say"><b>멍개</b><span>${p.tip}</span></div>
+      ${TTS?`<div class="spk"><button data-r="${S.rate}">🔊 원어민 속도</button><button data-r="0.6">천천히</button></div>`:''}
+      <button class="more" id="more">같은 패턴 예문 ${others.length}개 더 보기</button>
+      <div id="morebox"></div>
+    </div>`);
+  if(TTS){
+    document.querySelectorAll('.spk button').forEach(b=>b.onclick=()=>speak(ex[0],+b.dataset.r));
+    if(S.auto) setTimeout(()=>speak(ex[0]),220);
+  }
+  document.getElementById('more').onclick=e=>{
+    e.target.style.display='none';
+    document.getElementById('morebox').innerHTML=others.map((o,x)=>
+      `<div class="exrow"><div><div class="en">${o[0]}</div><div class="note">${o[1]}</div></div>${TTS?`<button class="mini" data-s="${x}" aria-label="듣기">🔊</button>`:''}</div>`).join('');
+    document.querySelectorAll('.mini').forEach(b=>b.onclick=()=>speak(others[+b.dataset.s][0]));
+  };
+  document.getElementById('sfoot').innerHTML=`<div class="grade">
+    <button data-g="0">몰랐다<small>오늘 다시</small></button>
+    <button data-g="1">애매했다<small>유지</small></button>
+    <button data-g="2">말했다<small>다음 단계</small></button></div>`;
+  document.querySelectorAll('.grade button').forEach(b=>b.onclick=()=>grade(i,+b.dataset.g,k,ms));
+  document.getElementById('sbody').scrollTop=9999;
+}
+
+function grade(i,g,k,ms){
+  const c=card(i), t=today(); c.seen++;
+  if(g===0){ c.box=0; c.fast=0; Q.push(i); }
+  else if(g===1){ c.fast=0; }
+  else {
+    if(!c.used.includes(k)) c.used.push(k);
+    c.fast = ms<=FAST ? c.fast+1 : 0;
+    S.msSum=(S.msSum||0)+ms; S.msN=(S.msN||0)+1;
+    if(c.day!==t) c.box=Math.min(c.box+1,IV.length-1);
+  }
+  c.day=t; c.due=addDays(IV[Math.max(c.box,1)]);
+  S.cards[i]=c;
+  S.log[t]=(S.log[t]||0)+1;
+  if(S.last!==t){ S.streak = (S.last===addDays(-1))? S.streak+1 : 1; S.last=t; }
+  save(); qi++; drawCard();
+}
+
+function finish(){
+  const st=stats(), el=eligible().length;
+  document.getElementById('sprog').style.width='100%';
+  document.getElementById('sbody').innerHTML=`
+    <div class="qko">오늘 몫, 끝났습니다.</div>
+    <p class="note" style="margin-top:14px">푼 카드 ${S.log[today()]||0}장 · 연속 ${S.streak}일 · 내 것이 된 패턴 ${st.mine}개</p>
+    ${el?`<div class="say"><b>멍개</b><span>검정 응시 가능한 패턴이 ${el}개 쌓였습니다. 봉인 예문으로 확인해 보십시오.</span></div>`
+       :`<div class="say"><b>멍개</b><span>가장 헷갈렸던 문장 하나만 지금 소리 내어 세 번 말하고 덮으십시오. 내일 또 나옵니다.</span></div>`}`;
+  document.getElementById('sfoot').innerHTML=`<div class="erow">
+    ${el?'<button id="goexam">검정 보러 가기</button>':''}
+    <button id="done" style="background:#2A242F">마치기</button></div>`;
+  document.getElementById('done').onclick=endStudy;
+  const ge=document.getElementById('goexam'); if(ge) ge.onclick=()=>{ endStudy(); go('exam'); };
+}
+document.getElementById('sclose').onclick=endStudy;
+
+function go(t){
+  document.querySelectorAll('nav button').forEach(x=>x.setAttribute('aria-selected',x.dataset.t===t));
+  document.querySelectorAll('section').forEach(s=>s.classList.toggle('on',s.id===t));
+  window.scrollTo(0,0);
+}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>go(b.dataset.t));
+
+function showIntro(){ document.getElementById('intro').classList.add('on'); window.scrollTo(0,0); }
+document.getElementById('igo').onclick=()=>{
+  document.getElementById('intro').classList.remove('on');
+  if(!S.intro){ S.intro=1; save(); }
+};
+
+load();
+</script>
